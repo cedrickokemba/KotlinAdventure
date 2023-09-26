@@ -6,7 +6,7 @@ import personnage.Personnage
 
 class Jeu(monstres: List<Personnage>) {
     lateinit var joueur: Personnage
-     var combats: MutableList<Combat> = mutableListOf()
+    var combats: MutableList<Combat> = mutableListOf()
     var score: Int = 0
 
     // Corps du constructeur
@@ -14,9 +14,9 @@ class Jeu(monstres: List<Personnage>) {
         // Lancement de la création du personage du joueur
         this.creerPersonnage()
         // Pour chaque monstre dans la liste de monstres
-        for (unMonstre in monstres){
+        for (unMonstre in monstres) {
             // On créer un combat
-            val unCombat= Combat(this,unMonstre)
+            val unCombat = Combat(this, unMonstre)
             combats.add(unCombat)
         }
     }
@@ -43,10 +43,21 @@ class Jeu(monstres: List<Personnage>) {
     fun creerPersonnage(): Personnage {
         println("Création votre personnage:")
         // TODO Mission 1.1
-        val hero = Personnage("YYY",150,150,12,8,8,12)
-        this.joueur= hero
-        return hero
-    }
-    
+        do {
 
+            val nomPerso = readln()
+            var ptattaque: Int = readln().toInt()
+            var ptdefense: Int = readln().toInt()
+            var ptendurance: Int = readln().toInt()
+            var ptvitesse: Int = readln().toInt()
+            var pttotale: Int = ptattaque + ptdefense + ptendurance + ptvitesse
+            while (pttotale > 40) {
+                println("Error le cumul des point de stat sont superrieure à 40")
+            }
+
+            val pointDeVieMax = 100 + (10 * ptendurance)
+            val hero = Personnage(nomPerso, 150, 150, 12, 8, 8, 12)
+            this.joueur = hero
+            return her
+    }
 }
