@@ -43,21 +43,34 @@ class Jeu(monstres: List<Personnage>) {
     fun creerPersonnage(): Personnage {
         println("Création votre personnage:")
         // TODO Mission 1.1
+        val nomPerso = readln()
+        var ptattaque: Int
+        var ptdefense: Int
+        var ptendurance: Int
+        var ptvitesse: Int
         do {
+            println("Veuillez attribuer vos points de statistique")
 
-            val nomPerso = readln()
-            var ptattaque: Int = readln().toInt()
-            var ptdefense: Int = readln().toInt()
-            var ptendurance: Int = readln().toInt()
-            var ptvitesse: Int = readln().toInt()
-            var pttotale: Int = ptattaque + ptdefense + ptendurance + ptvitesse
-            while (pttotale > 40) {
-                println("Error le cumul des point de stat sont superrieure à 40")
-            }
+            println("Attaque : ")
+            ptattaque= readln().toInt()
 
-            val pointDeVieMax = 100 + (10 * ptendurance)
-            val hero = Personnage(nomPerso, 150, 150, 12, 8, 8, 12)
+            println("Défense : ")
+            ptdefense = readln().toInt()
+
+            println("Endurance : ")
+            ptendurance = readln().toInt()
+
+            println("Vitesse : ")
+            ptvitesse= readln().toInt()
+
+            val pttotal: Int = ptattaque + ptdefense + ptendurance + ptvitesse
+        }
+            while (pttotal > 40)
+
+            val pointDeVieMax = 50 + (10 * ptendurance)
+
+            val hero = Personnage(nomPerso, pointDeVieMax, pointDeVieMax, 12, 8, 8, 12)
             this.joueur = hero
-            return her
+            return  hero 
     }
 }
