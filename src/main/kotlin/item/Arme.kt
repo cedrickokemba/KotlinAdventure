@@ -2,7 +2,8 @@ package item
 import jeu.TirageDes
 import personnage.Personnage
 
-class Arme constructor (var nom: String, var description: String,val qualite: Qualite,val typeArme: TypeArme, val tiragesDes: TirageDes) {
+class Arme ( nom: String, description: String,val qualite: Qualite,val typeArme: TypeArme):Item(nom,description) {
+
     fun calculerDegats(): Int {
 
         val tirage = TirageDes(this.typeArme.nombreDes, this.typeArme.valeurDeMax)
@@ -26,7 +27,7 @@ class Arme constructor (var nom: String, var description: String,val qualite: Qu
         }
     }
 
-    fun utiliser(personnage: Personnage){
+    override fun utiliser(personnage: Personnage){
 
     }
 

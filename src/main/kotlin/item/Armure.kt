@@ -1,12 +1,11 @@
 package item
 
 import personnage.Personnage
-
 class Armure (
-        val nom: String,
-        val description:String,
+        nom: String,
+        description:String,
         val qualite: Qualite,
-        val typeArmure: TypeArmure){
+        val typeArmure: TypeArmure): Item(nom,description){
 
 
     fun calculeProtection(): Int{
@@ -14,7 +13,7 @@ class Armure (
         return additionProtection
     }
 
-    fun utiliser(personnage: Personnage){
+   override fun utiliser(personnage: Personnage){
 
     }
 }

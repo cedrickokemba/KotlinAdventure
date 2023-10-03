@@ -3,9 +3,9 @@ package item
 import jeu.TirageDes
 import personnage.Personnage
 
-class Bombe constructor(var nom: String, var nbDe: Int, var maxDe: Int, var description: String) {
+class Bombe ( nom: String, var nbDe: Int, var maxDe: Int, description: String):Item(nom,description) {
 
-    fun utiliserBombe(cible: Personnage) {
+    override fun utiliser(cible: Personnage) {
         val tirage = TirageDes(nbDe, maxDe)
         val degats = tirage.lance()
 

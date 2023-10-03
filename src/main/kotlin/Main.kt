@@ -3,6 +3,10 @@ import item.Potion
 import item.Qualite
 import jeu.Jeu
 import personnage.Personnage
+import item.TypeArme
+import item.TypeArmure
+import item.Armure
+import javax.lang.model.element.TypeElement
 
 //instanciation des qualités des objets
 val qualiteCommun = Qualite("commun", 0, "\u001B[32m")
@@ -10,88 +14,127 @@ val qualiteRare = Qualite("rare", 1, couleur = "\u001B[34m")
 val qualiteEpic = Qualite("epic", 2, "\u001B[35m")
 val qualiteLegendaire = Qualite("legendaire", 3, "\u001B[33m")
 
-val EpeeDeLaMort = TypeArme (1 ,8, )
+//Type d'arme
+val dague = TypeArme ("Dague",1 ,4,3,18)
+val baton = TypeArme ("Bâton",1 ,6,2,20)
+val lance = TypeArme ("Lance",1 ,8,2,15)
+val arbaleteLegere = TypeArme ("Arbalète légère",1 ,8,2,15)
+val epeeLongue = TypeArme ("Épée longue",1 ,8,2,15)
+val hache = TypeArme ("Hâche",1 ,8,2,15)
+val epeeCourte = TypeArme ("É",1 ,8,2,15)
+val marteauDeGuerre = TypeArme ("Shinra Tensei",1 ,8,2,15)
+val arcLong = TypeArme ("Shinra Tensei",1 ,8,2,15)
+
+//Type d'armure
+
+val rembourre = TypeArmure("Rembourré", 1)
+val cuir = TypeArmure("cuir", 2)
+val cuirCloute = TypeArmure("Cuir clouté", 3)
+val cotteDeMailles = TypeArmure("Cotte de mailles", 6)
+
+// Armure
+val cotteDeMaillesAdamantine = Armure(
+    "Cotte de mailles en adamantine + 1",
+    "Cotte de mailles plus lourde mais aussi plus solide.",
+    qualiteRare,
+    cotteDeMailles
+)
+
+val manteauDelaNuit = Armure(
+    "Le manteau de la nuit",
+    "Une armure en cuir obscure comme la nuit",
+    qualiteEpic,
+    cuir
+)
+
+val armureDuGobelin = Armure(
+    "Armure du gobelin ",
+    "Armure en cuir rudimentaire",
+    qualiteCommun,
+    cuir
+)
+
+//BOMBES
+val bombeSplash = Bombe(
+    nom = "Bombe Splash",
+    nbDe = 4,
+    maxDe = 6,
+    description = "Une bombe classique mais redoutable",
+)
+
+val bombeBallon = Bombe(
+    nom = "Bombe Ballon",
+    nbDe = 2,
+    maxDe = 8,
+    description = "Une bombe légère mais pouvant être dévastatrice"
+)
+
+val bombeRobot = Bombe(
+    nom = "Bombe Robot",
+    nbDe = 3,
+    maxDe = 7,
+    description = "Une bombe à tête chercheuse"
+)
+
+val bombeGluante = Bombe(
+    nom = "Bombe gluante",
+    nbDe = 1,
+    maxDe = 11,
+    description = "Une bombe qui s'accroche à l'adversaire"
+)
+
+val bombeFlash = Bombe(
+    nom = "Flash",
+    nbDe = 3,
+    maxDe = 5,
+    description = "Grenade aveuglant l'ennemi"
+)
+
+val molotov = Bombe(
+    nom = "Cocktail molotov",
+    nbDe = 5,
+    maxDe = 8,
+    description = "Parfaite pour TOUT brûler"
+)
+
+val grenadeParalysante = Bombe(
+    nom = "Grenade paralysante",
+    nbDe = 3,
+    maxDe = 9,
+    description = "Paralyse l'ennemi et l'empêche de bouger laissant l'adversaire vulnérable"
+)
+
+//POTIONS
+
+val potion = Potion(
+    nom = "Potion",
+    soin = 25,
+    description = "Une potion simple mais efficace"
+)
+
+val superPotion = Potion(
+    nom = "Super Potion",
+    soin = 50,
+    description = "Une potion de bonne qualité"
+)
+
+val hyperPotion = Potion(
+    nom = "Hyper Potion",
+    soin = 75,
+    description = "Une excellente potion"
+)
+
+val guerison = Potion(
+    nom = "Guérison",
+    soin = 100,
+    description = "Soigne tous les maux"
+)
 
 fun main(args: Array<String>) {
     //Instantiation des bombes
-    val bombeSplash = Bombe(
-        nom = "Bombe Splash",
-        nbDe = 4,
-        maxDe = 6,
-        description = "Une bombe classique mais redoutable",
-    )
-
-    val bombeBallon = Bombe(
-        nom = "Bombe Ballon",
-        nbDe = 2,
-        maxDe = 8,
-        description = "Une bombe légère mais pouvant être dévastatrice"
-    )
-
-    val bombeRobot = Bombe(
-        nom = "Bombe Robot",
-        nbDe = 3,
-        maxDe = 7,
-        description = "Une bombe à tête chercheuse"
-    )
-
-    val bombeGluante = Bombe(
-        nom = "Bombe gluante",
-        nbDe = 1,
-        maxDe = 11,
-        description = "Une bombe qui s'accroche à l'adversaire"
-    )
-
-    val bombeFlash = Bombe(
-        nom = "Flash",
-        nbDe = 5,
-        maxDe = 3,
-        description = "Grenade aveuglant l'ennemi"
-    )
-
-    val molotov = Bombe(
-        nom = "Cocktail molotov",
-        nbDe = 8,
-        maxDe = 5,
-        description = "Parfaite pour TOUT brûler"
-    )
-
-    val grenadeParalysante = Bombe(
-        nom = "Grenade paralysante",
-        nbDe = 5,
-        maxDe = 5,
-        description = "Paralyse l'ennemi et l'empêche de bouger laissant l'adversaire vulnérable"
-    )
-
-
 
 
     //Instantiation des potions
-    val potion = Potion(
-        nom = "Potion",
-        soin = 25,
-        description = "Une potion simple mais efficace"
-    )
-
-    val superPotion = Potion(
-        nom = "Super Potion",
-        soin = 50,
-        description = "Une potion de bonne qualité"
-    )
-
-    val hyperPotion = Potion(
-        nom = "Hyper Potion",
-        soin = 75,
-        description = "Une excellente potion"
-    )
-
-    val guerison = Potion(
-        nom = "Guérison",
-        soin = 100,
-        description = "Soigne tous les maux"
-    )
-
-
 
 
     //Instantiation des monstres
