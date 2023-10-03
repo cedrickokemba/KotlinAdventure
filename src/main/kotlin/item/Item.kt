@@ -1,4 +1,4 @@
 package item
 
-class Potion {
+class Item {
 }
