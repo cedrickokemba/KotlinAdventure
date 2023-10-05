@@ -3,9 +3,11 @@ import item.Potion
 import item.Qualite
 import jeu.Jeu
 import personnage.Personnage
+import personnage.Monstre
 import item.TypeArme
 import item.TypeArmure
 import item.Armure
+import item.Arme
 import javax.lang.model.element.TypeElement
 
 //instanciation des qualités des objets
@@ -17,13 +19,50 @@ val qualiteLegendaire = Qualite("legendaire", 3, "\u001B[33m")
 //Type d'arme
 val dague = TypeArme ("Dague",1 ,4,3,18)
 val baton = TypeArme ("Bâton",1 ,6,2,20)
-val lance = TypeArme ("Lance",1 ,8,2,15)
-val arbaleteLegere = TypeArme ("Arbalète légère",1 ,8,2,15)
-val epeeLongue = TypeArme ("Épée longue",1 ,8,2,15)
-val hache = TypeArme ("Hâche",1 ,8,2,15)
-val epeeCourte = TypeArme ("É",1 ,8,2,15)
-val marteauDeGuerre = TypeArme ("Shinra Tensei",1 ,8,2,15)
-val arcLong = TypeArme ("Shinra Tensei",1 ,8,2,15)
+val lance = TypeArme ("Lance",1 ,8,3,20)
+val arbaleteLegere = TypeArme ("Arbalète légère",1 ,8,2,19)
+val epeeLongue = TypeArme ("Épée longue",1 ,8,2,19)
+val hache = TypeArme ("Hâche",1 ,8,3,20)
+val epeeCourte = TypeArme ("Épée Courte",1 ,8,2,19)
+val marteauDeGuerre = TypeArme ("Marteau de guerre",1 ,8,3,20)
+val arcLong = TypeArme ("Arc long",1 ,8,3,20)
+
+//Arme
+
+val edict= Arme(
+    "Edict",
+    "Une dague légendaire en mithril",
+    qualiteLegendaire,
+    dague
+)
+
+val epeeLongueDuDroit= Arme(
+    "Épée longue du droit",
+    "Une épée en fer froid",
+    qualiteRare,
+    epeeLongue
+)
+
+val lanceDuKobold= Arme(
+    "Lance du Kobold",
+    "Une lance rudimentaire",
+    qualiteCommun,
+    lance
+)
+
+val hachePlusDeux= Arme(
+    "Hache +2",
+    "Une hache tranchante",
+    qualiteEpic,
+    hache
+)
+
+val tonnerre= Arme(
+    "Tonnerre",
+    "Un marteau légendaire frappe comme la foudre",
+    qualiteLegendaire,
+    marteauDeGuerre
+)
 
 //Type d'armure
 
@@ -145,111 +184,15 @@ fun main(args: Array<String>) {
         attaque = 5,
         defense = 4,
         endurance = 6,
+        armePrincipale = lanceDuKobold,
+        armurePrincipale = null,
         vitesse = 11)
 
-    val ameEnPeine = Personnage(
-        "Ame en peine",
-        pointDeVie = 67,
-        pointDeVieMax = 67,
-        attaque = 10,
-        defense = 12,
-        endurance = 0,
-        vitesse = 14)
-
-    val armureAnimee = Personnage(
-        "Armure animée",
-        pointDeVie = 33,
-        pointDeVieMax = 33,
-        attaque = 8,
-        defense = 15,
-        endurance = 8,
-        vitesse = 6)
-
-    val ettin = Personnage(
-        "Ettin",
-        pointDeVie = 88,
-        pointDeVieMax = 88,
-        attaque = 16,
-        defense = 12,
-        endurance = 14,
-        vitesse = 8)
-
-    val elementaireDeFeu = Personnage(
-        "Elémentaire de feu",
-        pointDeVie = 102,
-        pointDeVieMax = 102,
-        attaque = 12,
-        defense = 10,
-        endurance = 8,
-        vitesse = 16)
-
-    val flagelleurMental = Personnage(
-        "Flagelleur mental",
-        pointDeVie = 71,
-        pointDeVieMax = 71,
-        attaque = 15,
-        defense = 7,
-        endurance = 10,
-        vitesse = 12)
-
-    val geleeOcre = Personnage(
-        "Gelée ocre",
-        pointDeVie = 45,
-        pointDeVieMax = 45,
-        attaque = 9,
-        defense = 14,
-        endurance = 7,
-        vitesse = 10)
-
-    val gnoll = Personnage(
-        "Gnoll",
-        pointDeVie = 25,
-        pointDeVieMax = 25,
-        attaque = 11,
-        defense = 8,
-        endurance = 11,
-        vitesse = 14)
-
-    val gorgone = Personnage(
-        "Gorgone",
-        pointDeVie = 114,
-        pointDeVieMax = 114,
-        attaque = 18,
-        defense = 14,
-        endurance = 14,
-        vitesse = 9)
-
-    val hommeLezard = Personnage(
-        "Homme-Lézard",
-        pointDeVie = 22,
-        pointDeVieMax = 22,
-        attaque = 11,
-        defense = 13,
-        endurance = 11,
-        vitesse = 11)
-
-    val kraken = Personnage(
-        "Kraken",
-        pointDeVie = 472,
-        pointDeVieMax = 472,
-        attaque = 18,
-        defense = 15,
-        endurance = 22,
-        vitesse = 14)
-
-    val mimique = Personnage(
-        "Mimique",
-        pointDeVie = 58,
-        pointDeVieMax = 58,
-        attaque = 14,
-        defense = 10,
-        endurance = 9,
-        vitesse = 12)
 
 
     // TODO Intermission 1 Ajouter d'autres monstres
     //On ajoute les monstres a la liste de monstres du jeu
-    val jeu = Jeu(listOf(gobelin, ameEnPeine, armureAnimee, ettin, elementaireDeFeu,flagelleurMental, geleeOcre, gnoll, gorgone, hommeLezard, kraken, mimique))
+    val jeu = Jeu(listOf(gobelin))
     //Lancement du jeu
     jeu.lancerCombat()
 }

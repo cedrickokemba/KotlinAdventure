@@ -20,7 +20,10 @@ class Combat(
             println("\u001b[0m")
         }else if (action ==1) {
                 println("${this.jeu.joueur.nom} passe son tour")
-            }
+            } else if (action == 2){
+                this.jeu.joueur.boirePotion()
+                println("${this.jeu.joueur.nom} Boit une potion")
+        }
 
     }
 
@@ -31,6 +34,10 @@ class Combat(
         if(TirageDes(1,100).lance() <= 70) {
             this.monstre.attaque(this.jeu.joueur)
             println("\u001b[0m")
+
+        } else if (this.monstre.avoirPotion() && this.monstre.pointDeVie < this.monstre.pointDeVieMax / 2 && TirageDes(1,100).lance() <= 80) {
+            this.monstre.boirePotion()
+
         } else {
             println("${monstre.nom} passe son tour")
             

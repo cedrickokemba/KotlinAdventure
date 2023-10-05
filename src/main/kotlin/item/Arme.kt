@@ -27,8 +27,8 @@ class Arme ( nom: String, description: String,val qualite: Qualite,val typeArme:
         }
     }
 
-    override fun utiliser(personnage: Personnage){
-
+    override fun utiliser(cible: Personnage){
+        cible.equipeArme(this)
     }
 
 }

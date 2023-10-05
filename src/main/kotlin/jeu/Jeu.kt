@@ -1,6 +1,9 @@
 package jeu
-
+import cotteDeMaillesAdamantine
+import epeeLongueDuDroit
+import personnage.Monstre
 import personnage.Personnage
+
 
 
 
@@ -16,7 +19,7 @@ class Jeu(monstres: List<Personnage>) {
         // Pour chaque monstre dans la liste de monstres
         for (unMonstre in monstres) {
             // On créer un combat
-            val unCombat = Combat(this, unMonstre)
+            val unCombat = Combat(this,unMonstre)
             combats.add(unCombat)
         }
     }
@@ -69,7 +72,7 @@ class Jeu(monstres: List<Personnage>) {
 
             val pointDeVieMax = 50 + (10 * ptendurance)
 
-            val hero = Personnage(nomPerso, pointDeVieMax, pointDeVieMax, 12, 8, 8, 12)
+            val hero = Personnage(nomPerso, pointDeVieMax, pointDeVieMax, 12, 8, 8, armePrincipale = epeeLongueDuDroit, armurePrincipale = cotteDeMaillesAdamantine , vitesse = 12)
             this.joueur = hero
             return  hero 
     }
