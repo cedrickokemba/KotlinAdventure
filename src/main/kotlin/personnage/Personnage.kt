@@ -1,11 +1,7 @@
 package personnage
-import item.Arme
-import item.Armure
-import item.Bombe
-import item.Item
-import item.Potion
+import item.*
 
-class Personnage(
+open class Personnage(
     val nom: String,
     var pointDeVie: Int,
     val pointDeVieMax: Int,
@@ -109,7 +105,7 @@ class Personnage(
         return "$nom (PV: $pointDeVie/$pointDeVieMax, Attaque: $attaque, Défense: $defense, Endurance: $endurance, Vitesse: $vitesse)"
     }
 
-    fun equipeArme(armeEquipe: Arme) {
+    open fun equipeArme(armeEquipe: Arme) {
         if (armeEquipe in this.inventaire) {
             var armePrincipal = armeEquipe
             println("${this.nom} equipe ${armeEquipe.nom}")
