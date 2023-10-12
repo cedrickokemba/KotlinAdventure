@@ -1,3 +1,4 @@
+import classePersonnage.Sort
 import item.Bombe
 import item.Potion
 import item.Qualite
@@ -8,6 +9,7 @@ import item.TypeArme
 import item.TypeArmure
 import item.Armure
 import item.Arme
+import jeu.TirageDes
 import javax.lang.model.element.TypeElement
 
 //instanciation des qualités des objets
@@ -169,6 +171,104 @@ val guerison = Potion(
     description = "Soigne tous les maux"
 )
 
+// Sort
+
+val bouleDeFeu = Sort("Boule de feu", { caster, cible  ->
+    run {
+        val degatsCaster = caster.attaque/3
+        val tirageDes = TirageDes(1,6)
+        var degat = tirageDes.lance()
+        degat+= degatsCaster
+        degat -= cible.calculeDefense()
+        cible.pointDeVie -= degat
+        println("Boule de feu inflige $degat à ${cible.nom} ")
+    }
+})
+
+val missileMagique = Sort("Missile magique", { caster, cible ->
+    run {
+        val degatsCaster = caster.attaque/2
+        val tirageDes = TirageDes(1,6)
+        var compteur = 0
+        if (compteur<degatsCaster){
+            var degat = tirageDes.lance()
+            degat -= cible.calculeDefense()
+            cible.pointDeVie -= degat
+            println("Le projectile magique inflige $degat à ${cible.nom} ")
+            compteur += 1
+        }
+    }
+})
+
+val sortDeSoin = Sort("Sort de soin",{ caster, cible ->
+    run {
+        val tirageDes = TirageDes (1,6)
+        val scoreAttaque = caster.attaque/2
+        var soin = tirageDes.lance()+ scoreAttaque
+        caster.pointDeVie += soin
+        if(caster.pointDeVie>caster.pointDeVieMax){
+            val soinProcure = caster.pointDeVieMax - caster.pointDeVie
+            caster.pointDeVie=caster.pointDeVieMax
+            println("Sort de soin a soigné ${caster.nom} de $soinProcure pv")
+        } else{
+            println("Sort de soin a soigné ${caster.nom} de $soin pv")
+        }
+    }
+})
+
+
+// arme magique
+
+val invocationArmeMagique = Sort("Invocation d'arme magique", { caster, cible ->
+    run {
+    val tirageDes = TirageDes(1, 20)
+    val resultatTirage = tirageDes.lance()
+    var qualite: Qualite? = null
+
+    when{
+        resultatTirage < 5 -> qualite = qualiteCommun
+        resultatTirage < 10 -> qualite = qualiteRare
+        resultatTirage < 15 -> qualite = qualiteEpic
+        else -> {
+            qualite = qualiteLegendaire
+        }
+    }
+
+    val armeMagique = Arme("Arme magique", "une arme magique invoquée via un sort", qualite, epeeLongue)
+    caster.inventaire.add(armeMagique)
+    caster.equipeArme(armeMagique)
+
+     println("L'arme magique à été ajoutée à l'inventaire.")
+    }
+})
+
+
+
+
+//armure magique
+
+val invocationArmureMagique = Sort("Invocation armure magique", { caster, cible ->
+    run {
+        val tirageDes = TirageDes(1, 20)
+        val resultatTirage = tirageDes.lance()
+        var qualite: Qualite? = null
+
+        when{
+            resultatTirage < 5 -> qualite = qualiteCommun
+            resultatTirage < 10 -> qualite = qualiteRare
+            resultatTirage < 15 -> qualite = qualiteEpic
+            else -> {
+                qualite = qualiteLegendaire
+            }
+        }
+
+        val armureMagique = Armure("Armure magique", "une armure magique invoquée via un sort", qualite, epeeLongue)
+        caster.inventaire.add(armureMagique)
+        caster.equipeArmure(armureMagique)
+
+        println("L'arme magique à été ajoutée à l'inventaire.")
+    }
+})
 fun main(args: Array<String>) {
     //Instantiation des bombes
 

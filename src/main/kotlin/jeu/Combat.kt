@@ -7,7 +7,6 @@ class Combat(
     val monstre: Personnage
 ) {
     var nombreTours: Int = 1
-
     // Méthode pour simuler un tour de combat du joueur
     fun tourDeJoueur() {
         println("\u001B[34m ---Tour de ${this.jeu.joueur.nom} (pv: ${this.jeu.joueur.pointDeVie}) ---")

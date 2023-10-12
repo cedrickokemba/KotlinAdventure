@@ -1,4 +1,5 @@
 package personnage
+import classePersonnage.Sort
 import item.*
 
 open class Personnage(
@@ -11,7 +12,8 @@ open class Personnage(
     var vitesse: Int,
     var armePrincipale: Arme?,
     var armurePrincipale: Armure?,
-    var inventaire: MutableList<Item> = mutableListOf()
+    var inventaire: MutableList<Item> = mutableListOf(),
+    var grimoire: MutableList<Sort> = mutableListOf()
 ) {
 
     fun avoirPotion(): Boolean {
@@ -111,11 +113,12 @@ open class Personnage(
             println("${this.nom} equipe ${armeEquipe.nom}")
         }
 
-        fun equipeArmure(armureEquipe: Armure) {
-            if (armureEquipe in this.inventaire) {
-                var armurePrincipal = armureEquipe
-                println("${this.nom} equipe ${armureEquipe.nom}")
-            }
+
+    }
+    fun equipeArmure(armureEquipe: Armure) {
+        if (armureEquipe in this.inventaire) {
+            var armurePrincipal = armureEquipe
+            println("${this.nom} equipe ${armureEquipe.nom}")
         }
     }
 }
