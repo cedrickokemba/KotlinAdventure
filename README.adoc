@@ -291,3 +291,721 @@ L'intermission 2 nous demande d'ajouter un attribut armrPrincipale et armure au 
 ==== Mission 3.1
 
 Cette mission nous demande de faire un test unitaire pour la méthode calculerDegats()
+
+[source,kotlin]
+
+class ArmeTest {
+@Test
+    fun calculerDegats() {
+        val arme = Arme("","",qualiteCommun,hache)
+        var result=arme.calculerDegats()
+        println(result)
+        Assertions.assertTrue(result >=1)
+        Assertions.assertTrue(result <=16)
+    }
+}
+
+==== Mission 3.2
+
+Cette mission nous demande de faire un test unitaire pour la méthode calculProtection()
+
+[source,kotlin]
+
+class ArmureTest {
+    @Test
+    fun calculeProtection() {
+        val result = cotteDeMaillesAdamantine.calculeProtection()
+        print(result)
+        Assertions.assertEquals(6+1, result)
+    }
+}
+
+==== Mission 3.3
+
+Cette mission nous demande de faire un test unitaire pour la méthode utiliser() de la classe Bombe
+
+[source,kotlin]
+
+class BombeTest {
+    @Test
+    fun utiliserBombe() {
+        val gobelin = Personnage(
+            "gobelin",
+            pointDeVie = 20,
+            pointDeVieMax = 20,
+            attaque = 5,
+            defense = 4,
+            endurance = 6,
+            armePrincipale = lanceDuKobold,
+            armurePrincipale = null,
+            vitesse = 11)
+        var result=bombeFlash.utiliser(gobelin)
+        println(result)
+        var dgt = gobelin.pointDeVie - 1
+       Assertions.assertTrue(gobelin.pointDeVie<20)
+    }
+}
+
+=== Mission 4
+
+La mission demande de faire hériter les classes Arme, Armure , Bombe et Potion de la classe Item. +
+
+Voici la classe Item :
+
+[source,kotlin]
+
+open class Item(val nom : String, val description: String) {
+    open fun utiliser(cible: Personnage){
+        println("$nom ne peut pas etre utilise.")
+    }
+    override fun toString(): String{
+        return "${nom} (nom = '$nom', description = '$description')"
+    }
+}
+
+Dans cette classe, le mot-clé "open" signifie que la classe est ouverte à l'héritage. +
+
+Ce qui veut dire que nous pouvons retirer les val ou var devant les attributs nom et description provenant de la classe Item et nous indiquons l'héritage avec :Item(nom,description) +
+
+Et nous ajoutons aussi override pour indiquer que nous souhaitons redéfinir une méthode déjà définie dans un parent/ancêtre
+
+==== Mission 4.1
+
+Cette mission demande de faire hériter la classe Arme de la classe Item
+
+[source,kotlin]
+
+class Arme ( nom: String, description: String,val qualite: Qualite,val typeArme: TypeArme):Item(nom,description)
+...
+override fun utiliser(cible: Personnage){
+
+    }
+
+==== Mission 4.2
+
+Cette mission demande de faire hériter la classe Armure de la classe Item
+
+[source,kotlin]
+
+class Armure (
+        nom: String,
+        description:String,
+        val qualite: Qualite,
+        val typeArmure: TypeArmure): Item(nom,description){
+...
+    override fun utiliser(personnage: Personnage){
+    }
+
+==== Mission 4.3
+
+Cette mission demande de faire hériter les classes Bombe et Potion de la classe Item
+
+===== Bombe
+
+[source,kotlin]
+
+class Bombe ( nom: String, var nbDe: Int, var maxDe: Int, description: String):Item(nom,description) {
+
+    override fun utiliser(cible: Personnage) {
+        val tirage = TirageDes(nbDe, maxDe)
+        val degats = tirage.lance()
+
+        val protectionCible = cible.calculeDefense()
+        val degatsFinaux = maxOf(degats - protectionCible, 1)
+
+        cible.pointDeVie -= degatsFinaux
+
+        println("La cible a pris $degatsFinaux dégâts.")
+    }
+}
+
+===== Potion
+
+[source,kotlin]
+
+class Potion (nom: String, var soin: Int, description: String): Item(nom,description){
+    override fun utiliser(cible: Personnage) {
+    }
+
+=== Mission 5
+
+==== Mission 5.1
+
+Cette mission demande de modifier les méthodes attaque() et de créer la méthode equipe() dans la classe Personnage
+
+===== La méthode attaque()
+
+Dans la modification de la méthode attaque() nous devons faire en sorte que :
+
+* Le personnage vérifie s'il a une arme équipée. Si une arme est équipée, les dégâts de
+base sont augmentés en fonction des dégâts de l'arme.
+
+* Les dégâts sont calculés en combinant les dégâts de base du personnage et les dégâts
+de l'arme (si une arme est équipée).
+
+* Les dégâts sont ajustés en fonction de la défense de l'adversaire. Au minimum, au
+moins 1 point de dégât est infligé.
+
+* Les dégâts infligés à l'adversaire sont calculés.
+
+* Les dégâts sont appliqués à l'adversaire en réduisant ses points de vie.
+
+* Le résultat de l'attaque est affiché, indiquant quel personnage attaque avec quelle arme
+(ou une attaque de base) et combien de points de dégâts sont infligés.
+
+* Les dégâts de base sont équivalent au score d’attaque du personnage /2
+
+* Si le personnage a une arme on ajoute aux dégâts de base les dégâts de l’arme
+retourner par la méthode calculerDegat()
+
+[source,kotlin]
+
+// Méthode pour attaquer un adversaire
+    fun attaque(adversaire: Personnage) {
+        //TODO Mission 4.1
+        var degats = this.attaque / 2
+        if (armePrincipale != null) {
+            degats += armePrincipale!!.calculerDegats()
+        }
+        degats-= adversaire.calculeDefense()
+        if(degats<=1){
+            degats=1
+        }
+        adversaire.pointDeVie -= degats
+        println("$nom attaque ${adversaire.nom} avec une attaque de base et inflige $degats points de dégâts.")
+    }
+
+===== La méthode equipeArme()
+
+Il existe deux versions de la méthode equipe() une méthode permet d’équiper une arme, l’autre
+permet d’équiper une armure.
+
+Ici c'est la méthode qui permet d'équiper une arme.
+
+[source,kotlin]
+
+ open fun equipeArme(armeEquipe: Arme) {
+        if (armeEquipe in this.inventaire) {
+            var armePrincipal = armeEquipe
+            println("${this.nom} equipe ${armeEquipe.nom}")
+        }
+    }
+
+===== Modification de la méthode utiliser() de la classe Arme
+
+Nous appliquons une modification sur le corps de la méthode utiliser() de la classe qui consiste à ce que la cible(paramètre) équipe l'arme en utilisant la méthode equipeArme() de la classe Personnage.
+
+[source,kotlin]
+
+    override fun utiliser(cible: Personnage){
+        cible.equipeArme(this)
+    }
+
+==== Mission 5.2
+
+Cette mission demande de créer les méthodes calculDefense() et equipe() de la classe Personnage
+
+===== La méthode calculDefense()
+
+Cette méthode ne prend pas de paramètre et elle retourne un entier qui correspond à la défense total du personnage, pour cela il faut que :
+
+* La défense de base correspond à la moitié du score du défense du personnage
+
+* Si le personnage a une armure alors on ajoute le bonus de l’armure en utilisant la
+méthode calculProtection()
+
+* On retourne la valeur
+
+[source,kotlin]
+
+fun calculeDefense(): Int {
+        //TODO Mission 4.2
+        var result = this.defense / 2;
+        if (this.armurePrincipale != null) {
+            result = result + this.armurePrincipale!!.calculeProtection()
+        }
+        return result;
+    }
+
+===== La méthode equipe()
+
+Contrairement à la mission 5.1, ici cette méthode permet d'équiper une armure. +
+La méthode prend en paramètre une armure.
+
+* Si l'armure (paramètre) est dans l’inventaire du personnage alors l’attribut armure du personnage
+prend la valeur du paramètre.
+
+* On affiche le message « nomPerso equipe nomArmure »
+
+[source,kotlin]
+
+fun equipeArmure(armureEquipe: Armure) {
+        if (armureEquipe in this.inventaire) {
+            var armurePrincipal = armureEquipe
+            println("${this.nom} equipe ${armureEquipe.nom}")
+        }
+    }
+
+==== Mission 5.3
+
+Cette mission demande de créer les méthodes avoirPotion(), avoirBombe(), boirePotion() de la classe Personnage.
+
+===== La méthode avoirPotion()
+
+Cette méthode ne prend pas de paramètre et retourne un Booléen.
+
+* Retourne vrai si le personnage dispose au moins d’une potion dans son inventaire sinon elle retourne
+faux.
+
+[source,kotlin]
+
+fun avoirPotion(): Boolean {
+        for (item in this.inventaire) {
+            if (item is Potion) {
+                return true
+            }
+        }
+        return false
+    }
+
+===== La méthode avoirBombe()
+
+Cette méthode a le même principe que pour la méthode avoirPotion()
+
+[source,kotlin]
+
+fun avoirBombe(): Boolean {
+        for (item in this.inventaire) {
+            if (item is Bombe) {
+                return true
+            }
+        }
+        return false
+    }
+
+===== La méthode boirePotion()
+
+La méthode ne prend pas de paramètre et ne retourne rien.
+
+Pour réaliser cette méthode il faut que :
+
+* Le personnage récupère la première potion de la liste (s'il y en a).
+
+* Le personnage récupère le montant de soin de la potion.
+
+* Le personnage met à jour ses points de vie en ajoutant le montant de soin de la potion. Si
+les points de vie dépassent le maximum, ils sont ajustés au maximum.
+
+* Le personnage retire la potion de son inventaire.
+
+* Le résultat de la boisson de la potion est affiché, indiquant le nom de la potion et le
+montant de points de vie récupérés.
+
+[source,kotlin]
+
+    fun boirePotion() {
+        if (avoirPotion() == true) {
+            var premierePotion = -1
+            for (i in 0..this.inventaire.lastIndex) {
+                if (this.inventaire[i] is Potion) {
+                    val potion: Potion = this.inventaire[i] as Potion
+                    premierePotion = potion.soin
+                    this.inventaire.remove(potion)
+                    break
+                }
+            }
+            pointDeVie += premierePotion
+            if (pointDeVie > pointDeVieMax) {
+                this.pointDeVie = pointDeVieMax
+            }
+            println("Vous êtes maintenant à $pointDeVie grâce à l'usage de la potion.")
+        }
+    }
+
+=== Missionn 6
+
+==== Mission 6.1
+
+La mission demande créer les méthodes afficheInventaire() et loot() de la classe Personnage
+
+===== La méthode afficheInventaire()
+
+Cette méthode ne prend pas de paramètre et ne retourne rien.
+
+Il faut que cette méthode :
+
+* Afficher le message « inventaire de nomPerso »
+
+* Afficher chaque item de l’inventaire du personnage. A chaque item est associé un numéro (son index
+dans l’inventaire).
+Par exemple : +
+0 => Potion de soin +
+1 => Epée longue Legendaire
+
+[source,kotlin]
+
+fun afficheInventaire(){
+        println("inventaire de ${this.nom}")
+        for (i in 0..this.inventaire.lastIndex) {
+            println(this.inventaire[i])
+        }
+    }
+
+===== La méthode loot()
+
+La méthode prend une cible de type Personnage en paramètre et ne retourne rien.
+
+La méthode doit :
+
+* Vérifier que la cible a des pv inférieure ou égale à 0.
+
+* Si c’est le cas on remplace l’arme principale de la cible par null et son armure par null et on transfère
+son inventaire a l’objet courant (on ajoute l’inventaire de la cible a l’objet courant).
+
+[source,kotlin]
+
+fun loot(cible: Personnage){
+        if (cible.pointDeVie <= 0){
+            cible.armePrincipale = null
+            cible.armurePrincipale = null
+            this.inventaire.addAll(cible.inventaire)
+            cible.inventaire = mutableListOf()
+        }
+    }
+
+== Sprint 2
+
+Ce sprint a pour objectif d'ajouter comme fonctionnalité le choix de la classe pour le personnage du joueur :
+
+*  Le guerrier possède 2 armes.
+
+*   Le voleur peut voler un objet, y compris une arme ou une armure, à l'ennemi.
+
+*  Le mage peut lancer des sorts.
+
+Les classes Guerrier, Voleur et Mage hérite de Personnage. +
+Cela signifie que les "enfants" vont hériter des méthodes et attributs du parent. +
+Cependant, il est toujours possible de redéfinir des méthodes déjà définies dans la classe parent, si nécessaire. +
+Par exemple, la méthode "attaque()" peut rester la même pour un Voleur ou un Mage, mais un Guerrier pourrait utiliser ses deux armes.
+
+
+=== Mission 7
+
+==== Mission 7.1
+
+Cette mission a pour but de créer la classe Guerrier en utilisant l'héritage
+
+[source, kotlin]
+
+class Guerrier(
+    nom: String,
+    pointDeVie: Int,
+    pointDeVieMax: Int,
+    attaque: Int,
+    defense: Int,
+    endurance: Int,
+    vitesse: Int,
+    armePrincipale: Arme?,
+    armurePrincipale: Armure?,
+    var armeSecondaire: Arme?
+): Personnage(nom, pointDeVie, pointDeVieMax, attaque, defense, endurance, vitesse, armePrincipale, armurePrincipale ) {
+
+==== Mission 7.2
+
+Cette mission a pour but de créer la classe Voleur en utilisant l'héritage
+
+[source, kotlin]
+
+class Voleur(
+    nom: String,
+    pointDeVie: Int,
+    pointDeVieMax: Int,
+    attaque: Int,
+    defense: Int,
+    endurance: Int,
+    vitesse: Int,
+    armePrincipale: Arme?,
+    armurePrincipale: Armure?,
+) : Personnage(nom, pointDeVie, pointDeVieMax, attaque, defense, endurance, vitesse, armePrincipale, armurePrincipale){
+
+==== Mission 7.3
+
+Cette mission a pour but de créer les classes mage et sort en utilisant l'héritage
+
+===== Mage
+[source, kotlin]
+
+class Mage(
+    nom: String,
+    pointDeVie: Int,
+    pointDeVieMax: Int,
+    attaque: Int,
+    defense: Int,
+    endurance: Int,
+    vitesse: Int,
+    armePrincipale: Arme?,
+    armurePrincipale: Armure?
+) : Personnage(nom, pointDeVie, pointDeVieMax, attaque, defense, endurance, vitesse, armePrincipale, armurePrincipale ) {
+
+===== Sort
+
+[source,kotlin]
+
+class Sort(val nom:String, val effet :(Personnage,Personnage)-> Unit) {
+}
+
+=== Mission 8
+
+==== Mission 8.1
+
+Cette mission demande de créer les méthodes equipe() et attaquer() de la classe Guerrier
+
+===== La méthode equipeArme()
+
+Quand un guerrier équipe une arme, il doit choisir l’emplacement de l’arme (principale ou secondaire).
+
+[source,kotlin]
+
+override fun equipeArme(armeEquipe: Arme) {
+        if (armeEquipe in this.inventaire) {
+            var armePrincipal = armeEquipe
+            println("${this.nom} equipe ${armeEquipe.nom}")
+        }
+    }
+}
+
+===== La méthode attaquer()
+
+Un guerrier attaque avec ces deux armes il faut donc redéfinir la méthode attaque()
+
+[source,kotlin]
+
+fun attaquer(adversaire: Personnage) {
+        var degats = 0
+        if (armePrincipale != null) {
+            degats += attaque + armePrincipale!!.calculerDegats()
+        }
+        if (armeSecondaire != null) {
+            degats += attaque + armeSecondaire!!.calculerDegats()
+        }
+        // Soustraction de la défense de l'adversaire
+        degats -= adversaire.calculeDefense()
+        // Vérification si les dégâts sont positifs
+        if (degats > 0) {
+            adversaire.pointDeVie -= degats
+            println("$nom attaque ${adversaire.nom} et inflige $degats points de dégâts.")
+        } else {
+            println("$nom attaque ${adversaire.nom} mais ne fait aucun dégât.")
+        }
+    }
+
+==== Mission 8.2
+
+Cette mission demande de créer la méthode voler() de la classe Voleur
+
+La méthode voler() prend en paramètre une cible de type Personnage.
+
+* Vole un item de son inventaire tiré aléatoirement.
+
+* Dans le cas où le voleur vole une arme ou une armure qui est équipé par la cible, il faut la retirer de l'attribut arme ou armure.
+
+[source,kotlin]
+
+    fun volerItem(cible: Personnage){
+        if (cible.inventaire.size > 0) {
+            val indexAleatoire = (0..cible.inventaire.size).random()
+            val itemVole = cible.inventaire.removeAt(indexAleatoire)
+            println("L'action a été réalisée avec succès ! Vous avez volé $itemVole à l'ennemi.")
+            this.inventaire.add(itemVole)
+            if (itemVole == cible.armePrincipale) {
+                cible.armePrincipale == null
+            } else if (itemVole == armurePrincipale) {
+                cible.armurePrincipale == null
+            }
+        } else {
+            println("Aucun objet n'a été volé haha cheh ratio.")
+        }
+    }
+
+==== Mission 8.3
+
+Cette mission demande de créer les méthodes afficherGrimoire() et choisirEtlancerSort() de la classe Mage
+
+===== La méthode afficherGrimmoire()
+
+Le grimoire est une liste mutable de sort. +
+La méthode afficherGrimmoire() affiche tous les sorts présents dans le grimoire et l’index du sort : +
+0 => Boule de feu +
+1=> Sort de soins
+
+[source,kotlin]
+
+fun afficheGrimoire() {
+        println("Sorts de ${this.nom} :")
+        for (sort in grimoire) {
+            if (sort is Sort) {
+                println("- ${sort.nom}")
+            }
+        }
+    }
+
+===== La méthode choisirEtLancerSort()
+
+La méthode invoque la méthode afficherGrimoire puis demande à l'utilisateur de lancer un sort. +
+Si le choix de l’utilisateur est valide alors on demande à l’utilisateur de choisir la cible du sort : le joueur ou le monstre.
+Puis lance l’effet du sort : sortChoisi.effet(this,cible). +
+Le premier argument correspond au lanceur de sort. +
+Le deuxième argument à la cible.
+
+[source,kotlin]
+
+fun chosirEtLancerSort(ennemi:Personnage) {
+        if(grimoire.isEmpty()){
+            print("Le grimoire est vide. Vous ne pouvez pas lancer de sort")
+        } else{
+            println(this.afficheGrimoire())
+            println("Choix de sort : ")
+            var indexSort = readln().toInt()
+            if(this.grimoire.size<=indexSort)
+            {
+            var sort = this.grimoire[indexSort]
+                var personnage = this
+                var adversaire = ennemi
+                println("Selectionnez votre cible :")
+                println(" [0] => Personnage, [1] Ennemi")
+                var cible = readln().toInt()
+                if(cible == 0 || cible ==1){
+                    if(cible == 0 ){
+                    sort.effet(personnage,personnage)
+                } else if(cible == 1){
+                        sort.effet(personnage,adversaire)
+                    }                }
+            } else {
+                println("Choix de sort invalide")
+            }
+        }
+    }
+
+=== Mission 9
+
+==== Mission 9.1
+
+Cette mission demande de créer les sorts Boule de feu et Missile magique à partir du Main
+
+===== Boule de feu
+
+[source,kotlin]
+
+val bouleDeFeu = Sort("Boule de feu", { caster, cible  ->
+    run {
+        val degatsCaster = caster.attaque/3
+        val tirageDes = TirageDes(1,6)
+        var degat = tirageDes.lance()
+        degat+= degatsCaster
+        degat -= cible.calculeDefense()
+        cible.pointDeVie -= degat
+        println("Boule de feu inflige $degat à ${cible.nom} ")
+    }
+})
+
+===== Missile magique
+
+[source,kotlin]
+
+val missileMagique = Sort("Missile magique", { caster, cible ->
+    run {
+        val degatsCaster = caster.attaque/2
+        val tirageDes = TirageDes(1,6)
+        var compteur = 0
+        if (compteur<degatsCaster){
+            var degat = tirageDes.lance()
+            degat -= cible.calculeDefense()
+            cible.pointDeVie -= degat
+            println("Le projectile magique inflige $degat à ${cible.nom} ")
+            compteur += 1
+        }
+    }
+})
+
+==== Mission 9.2
+
+Cette mission demande de créer les sorts Invocation d'une arme magique et Invocation d'une armure magique à partir du Main.
+
+===== Invocation d'une arme magique
+
+[source.kotlin]
+
+val invocationArmeMagique = Sort("Invocation d'arme magique", { caster, cible ->
+run {
+val tirageDes = TirageDes(1, 20)
+val resultatTirage = tirageDes.lance()
+var qualite: Qualite? = null
+    when{
+        resultatTirage < 5 -> qualite = qualiteCommun
+        resultatTirage < 10 -> qualite = qualiteRare
+        resultatTirage < 15 -> qualite = qualiteEpic
+        else -> {
+            qualite = qualiteLegendaire
+        }
+    }
+    val armeMagique = Arme("Arme magique", "une arme magique invoquée via un sort", qualite, epeeLongue)
+    caster.inventaire.add(armeMagique)
+    caster.equipeArme(armeMagique)
+     println("L'arme magique à été ajoutée à l'inventaire.")
+    }
+})
+
+===== Invocation d'une armure magique
+
+[source,kotlin]
+
+val invocationArmureMagique = Sort("Invocation armure magique", { caster, cible ->
+    run {
+        val tirageDes = TirageDes(1, 20)
+        val resultatTirage = tirageDes.lance()
+        var qualite: Qualite? = null
+        when{
+            resultatTirage < 5 -> qualite = qualiteCommun
+            resultatTirage < 10 -> qualite = qualiteRare
+            resultatTirage < 15 -> qualite = qualiteEpic
+            else -> {
+                qualite = qualiteLegendaire
+            }
+        }
+        val armureMagique = Armure("Armure magique", "une armure magique invoquée via un sort", qualite, cuir)
+        caster.inventaire.add(armureMagique)
+        caster.equipeArmure(armureMagique)
+        println("L'armure magique à été ajoutée à l'inventaire.")
+    }
+})
+
+==== Mission 9.3
+
+Cette mission demande de créer le sort de soin.
+
+[source,kotlin]
+
+val sortDeSoin = Sort("Sort de soin",{ caster, cible ->
+    run {
+        val tirageDes = TirageDes (1,6)
+        val scoreAttaque = caster.attaque/2
+        var soin = tirageDes.lance()+ scoreAttaque
+        caster.pointDeVie += soin
+        if(caster.pointDeVie>caster.pointDeVieMax){
+            val soinProcure = caster.pointDeVieMax - caster.pointDeVie
+            caster.pointDeVie=caster.pointDeVieMax
+            println("Sort de soin a soigné ${caster.nom} de $soinProcure pv")
+        } else{
+            println("Sort de soin a soigné ${caster.nom} de $soin pv")
+        }
+    }
+})
+
+== Conclusion
+
+Ce projet nous a permis tout d'abord de renforcer nos compétence et d'apprendre de nouvelles choses sur le langage de programmation Kotlin. +
+Il nous a permis aussi de travailler en équipe, de se partager les tâches et de communiquer ensemble.
+
+
+
+

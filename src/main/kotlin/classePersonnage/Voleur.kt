@@ -33,6 +33,5 @@ class Voleur(
         } else {
             println("Aucun objet n'a été volé haha cheh ratio.")
         }
-
     }
 }

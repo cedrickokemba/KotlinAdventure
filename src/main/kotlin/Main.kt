@@ -262,11 +262,11 @@ val invocationArmureMagique = Sort("Invocation armure magique", { caster, cible 
             }
         }
 
-        val armureMagique = Armure("Armure magique", "une armure magique invoquée via un sort", qualite, epeeLongue)
+        val armureMagique = Armure("Armure magique", "une armure magique invoquée via un sort", qualite, cuir)
         caster.inventaire.add(armureMagique)
         caster.equipeArmure(armureMagique)
 
-        println("L'arme magique à été ajoutée à l'inventaire.")
+        println("L'armuire magique à été ajoutée à l'inventaire.")
     }
 })
 fun main(args: Array<String>) {

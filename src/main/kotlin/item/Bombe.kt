@@ -16,6 +16,5 @@ class Bombe ( nom: String, var nbDe: Int, var maxDe: Int, description: String):I
 
         println("La cible a pris $degatsFinaux dégâts.")
     }
-
 }
 

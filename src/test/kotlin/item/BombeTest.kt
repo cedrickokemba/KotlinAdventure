@@ -6,9 +6,7 @@ import bombeFlash
 import personnage.Personnage
 import lanceDuKobold
 class BombeTest {
-
     @Test
-
     fun utiliserBombe() {
         val gobelin = Personnage(
             "gobelin",

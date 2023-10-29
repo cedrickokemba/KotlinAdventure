@@ -41,19 +41,15 @@ open class Personnage(
                 if (this.inventaire[i] is Potion) {
                     val potion: Potion = this.inventaire[i] as Potion
                     premierePotion = potion.soin
-
                     this.inventaire.remove(potion)
                     break
                 }
             }
-
             pointDeVie += premierePotion
             if (pointDeVie > pointDeVieMax) {
                 this.pointDeVie = pointDeVieMax
             }
-
             println("Vous êtes maintenant à $pointDeVie grâce à l'usage de la potion.")
-
         }
     }
 
@@ -112,8 +108,6 @@ open class Personnage(
             var armePrincipal = armeEquipe
             println("${this.nom} equipe ${armeEquipe.nom}")
         }
-
-
     }
     fun equipeArmure(armureEquipe: Armure) {
         if (armureEquipe in this.inventaire) {
