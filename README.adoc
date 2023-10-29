@@ -1,0 +1,293 @@
+= Projet Kotlin Aventure
+:toc-title: Sommaire
+:toc: top
+
+Projet réalisé par : +
+TRAN Nicolas +
+MAUDET Dylan +
+OKEMBA MEBOUKOU Cédrick
+
+== Contexte +
+KotlinAventure est un jeu de rôle d'aventure plonge les joueurs dans un monde fantastique rempli de monstres redoutables, de personnages héroïques et de combats épiques. +
+Le jeu se déroule dans un univers médiéval-fantastique où les joueurs incarnent un personnage. +
+
+Voici un aperçu des classes de personnages disponibles : +
+
+Guerrier : Les guerriers sont des combattants puissants armés. Ils sont connus pour
+leur force brute et leur capacité à infliger des dégâts élevés en combat. +
+
+Voleur : Les voleurs excellent dans l'art de la discrétion et de la ruse. Ils sont capables de voler des objets précieux à leurs ennemis et de se faufiler dans les ombres pour échapper aux dangers. +
+
+Mage : Les mages maîtrisent l'art de la magie et peuvent lancer des sorts
+dévastateurs. Ils ont un grimoire rempli de sorts variés, chacun ayant un effet unique sur les adversaires.
+
+== Introduction +
+
+Ce projet a été réalisé en 2 sprint, le premier sprint était concentré sur la gestion des items et le deuxième sprint était concentré sur les fonctionnalités des classes.
+
+Dans ce projet, nous devions réaliser plusieurs missions.
+
+== Sprint 1
+
+Dans le sprint 1, chaque mission est divisée en 6 étapes, et chaque étape est suivie d'une intermission au cours de laquelle les membres du groupe doivent échanger et expliquer le travail réalisé lors de l'étape aux autres membres du groupe. +
+
+Le sprint 1 est divisé en 3 missions/branches. +
+
+* - La branche 1 concerne principalement les armes.
+* - La branche 2 concerne principalement les armures.
+* - La branche 3 concerne principalement les potions et bombes.
+
+=== Mission 1
+
+==== Mission 1.1
+
+La mission 1.1 consistait à modifier la méthode creerPersonnage() de la classe Jeu en faisant en sorte que : +
+
+* L'utilisateur saisit le nom du personnage.
+* L'utilisateur saisit les scores d'attaque, de défense, d'endurance et de vitesse (Attention l’utilisateur a un grand total de 40 points à répartir, si plus de 40 points sont distribués alors on recommence l’attribution des points).
+* Les points de vie maximum sont calculés en fonction de l'endurance.
+* Le personnage spécifique est créé.
+* On valorise l’attribut joueur avec le personnage créé et on retourne le personnage.
+
+[source,kotlin]
+
+/**
+     *  Méthode pour créer le personnage du joueur en demandant les informations à l'utilisateur
+     *
+     */
+    fun creerPersonnage(): Personnage {
+        println("Création votre personnage:")
+        // TODO Mission 1.1
+        val nomPerso = readln()
+        var ptattaque: Int
+        var ptdefense: Int
+        var ptendurance: Int
+        var ptvitesse: Int
+ do {
+            println("Veuillez attribuer vos points de statistique")
+            println("Attaque : ")
+            ptattaque= readln().toInt()
+            println("Défense : ")
+            ptdefense = readln().toInt()
+            println("Endurance : ")
+            ptendurance = readln().toInt()
+            println("Vitesse : ")
+            ptvitesse= readln().toInt()
+            val pttotal: Int = ptattaque + ptdefense + ptendurance + ptvitesse
+        }
+            while (pttotal > 40)
+            val pointDeVieMax = 50 + (10 * ptendurance)
+            val hero = Personnage(nomPerso, pointDeVieMax, pointDeVieMax, 12, 8, 8, armePrincipale = epeeLongueDuDroit, armurePrincipale = cotteDeMaillesAdamantine , vitesse = 12)
+            this.joueur = hero
+            return  hero
+    }
+}
+
+==== Mission 1.2
+
+La mission 1.2 consistait à modifier la méthode tourDuJoueur() de la classe Jeu en faisant en sorte que :
+
+* Le tour du Joueur commence, et l'annonce est affichée.
+* Le joueur est invité à choisir une action parmi les options affichées : Attaquer, Passer, (d’autres actions seront disponibles plus tard).
+* L'action choisie par le joueur est saisie.
+* En fonction de l'action choisie, l'action correspondante est exécutée. Par exemple, si le joueur choisit d'attaquer, la méthode joueur.attaquer(monstre) est appelée.
+
+[source,kotlin]
+ // Méthode pour simuler un tour de combat du joueur
+    fun tourDeJoueur() {
+        println("\u001B[34m ---Tour de ${this.jeu.joueur.nom} (pv: ${this.jeu.joueur.pointDeVie}) ---")
+       //TODO Mission 1.2
+        //Choix de l'action
+        println("Sélectionnez votre action ")
+        var action = readln().toInt()
+        if(action==0 ) {
+            this.jeu.joueur.attaque(monstre)
+            println("\u001b[0m")
+        }else if (action ==1) {
+                println("${this.jeu.joueur.nom} passe son tour")
+            } else if (action == 2){
+                this.jeu.joueur.boirePotion()
+                println("${this.jeu.joueur.nom} Boit une potion")
+        }
+    }
+
+==== Mission 1.2
+
+La mission 1.2 consistait modifier la méthode tourDeMonstre en faisant en sorte que :
+
+* Le tour du monstre commence, et l'annonce est affichée.
+* Un nombre aléatoire est généré pour déterminer le comportement du monstre.
+* Le résultat de la génération aléatoire est utilisé pour décider si le monstre va attaquer
+le joueur ou passer.
+* Si le monstre choisit d'attaquer le joueur ou de passer, l'action correspondante est
+exécutée (par exemple, monstre.attaquer(joueur) ou une annonce de passage est
+affichée).
+
+Pour décider de l’action du monstre on tire un nombre aléatoire entre 1 et 100 :
+
+* Si le nombre est inférieur ou égal à 70, le monstre attaque sinon le monstre passe son tour
+
+[source,kotlin]
+// Méthode pour simuler un tour de combat du monstre
+    fun tourDeMonstre() {
+        println("\u001B[31m---Tour de ${monstre.nom} (pv: ${monstre.pointDeVie}) ---")
+        //TODO Mission 1.3
+        if(TirageDes(1,100).lance() <= 70) {
+            this.monstre.attaque(this.jeu.joueur)
+            println("\u001b[0m")
+        } else if (this.monstre.avoirPotion() && this.monstre.pointDeVie < this.monstre.pointDeVieMax / 2 && TirageDes(1,100).lance() <= 80) {
+            this.monstre.boirePotion()
+        } else {
+            println("${monstre.nom} passe son tour")
+        }
+    }
+
+== Intermission 1
+
+L'intermission 1 nous demandait d'ajouter des monstres à la liste des monstres du jeu, voici un exemple :
+
+[source,kotlin]
+
+val gnoll = Personnage(
+            "gnoll",
+            pointDeVie = 25,
+            pointDeVieMax = 25,
+            attaque = 11,
+            defense = 8,
+            endurance = 11,
+            armePrincipale = lanceDuKobold,
+            armurePrincipale = null,
+            vitesse = 14)
+
+ //On ajoute les monstres a la liste de monstres du jeu
+    val jeu = Jeu(listOf(gobelin,gnoll))
+
+=== Mission 2
+
+==== Mission 2.1
+
+Cette mission demandait de réaliser les classes Arme et TypeArme +
+
+===== La classe TypeArme
+
+[source,kotlin]
+class TypeArme (
+     nom: String,
+    val nombreDes: Int,
+    val valeurDeMax: Int,
+    val multiplicateurCritique:Int,
+    val activationCritique:Int,
+    )
+
+===== La classe Arme
+La classe Arme nous demandait de créer la méthode calculerDegats(), la méthode retourne un entier et calcule les dégâts en prenant en compte :
+
+* Le tirage d'un dé qui vient de la méthode lance() de la classe TirageDes :
+[source,kotlin]
+class TirageDes(val nbDe:Int, val maxDe:Int) {
+    fun lance():Int{
+        // Si on lance 3d8
+        // nbDe = 3 correspond au nombre de dés que l'on souhaite lancer
+        // maxDe = 8 correspond au nombre de face du dé et aussi a la valeur maximum du dé
+        // resultat =0
+        // on lance le premier dé on fait un 4
+        // resultat =4
+        // on lance le deuxième dé on fait un 3
+        // resultat =7
+        // on lance le troisème dé on fait un 8
+        // resultat = 15
+        // la méthode retourne 15
+        var resultat=0
+        repeat(this.nbDe){
+            resultat+=(1..this.maxDe).random()
+        }
+        return resultat
+    }
+}
+
+* Un lancé autre dé et si le résultat est supérieur ou égal à l'attribut activationCritique du type d'arme alors les dégâts sont multipliés par le multiplicateurCritique du type d'arme. Si il y a un coup critique, le message "Critique" est affiché
+
+[source,kotlin]
+class Arme ( nom: String, description: String,val qualite: Qualite,val typeArme: TypeArme):Item(nom,description) {
+    fun calculerDegats(): Int {
+        val tirage = TirageDes(this.typeArme.nombreDes, this.typeArme.valeurDeMax)
+        // Utilisation de la méthode lance() pour obtenir le résultat du lancé
+        var resultat = tirage.lance()
+        val tirageCrit = TirageDes(this.typeArme.nombreDes, this.typeArme.activationCritique)
+        if(tirageCrit.lance() <= this.typeArme.activationCritique){
+            var critique = resultat * this.typeArme.multiplicateurCritique
+            var degatsTotal = critique + this.qualite.bonusRarete
+            println("Critique")
+            return degatsTotal
+        } else{
+            val degatsTotal = resultat + this.qualite.bonusRarete
+            return degatsTotal
+        }
+    }
+
+==== Mission 2.2
+
+Cette Mission demandait de réaliser les classes Armure et TypeArmure
+
+===== La classe TypeArmure
+
+[source,kotlin]
+class TypeArmure (
+     nom: String,
+    val bonusType: Int,
+)
+
+===== La classe Armure
+
+La classe Armure nous demandait de créer la méthode calcule protection qui retourne un entier en prenant en compte :
+
+* Le bonus de protection obtenu en additionnant le bonus type de l'armure et le bonusQualite de la qualité de l'armure
+
+[source,kotlin]
+class Armure (
+        nom: String,
+        description:String,
+        val qualite: Qualite,
+        val typeArmure: TypeArmure): Item(nom,description){
+    fun calculeProtection(): Int{
+        var additionProtection = this.typeArmure.bonusType + this.qualite.bonusRarete
+        return additionProtection
+    }
+
+
+==== Mission 2.3
+
+Cette mission demandait de réaliser les classes Potion et Bombe et la méthode utiliser()
+
+===== La classe Potion
+
+[source,kotlin]
+class Potion (nom: String, var soin: Int, description: String): Item(nom,description){
+    override fun utiliser(cible: Personnage) {
+    }
+}
+
+===== La classe Bombe
+
+[source,kotlin]
+class Bombe ( nom: String, var nbDe: Int, var maxDe: Int, description: String):Item(nom,description) {
+    override fun utiliser(cible: Personnage) {
+        val tirage = TirageDes(nbDe, maxDe)
+        val degats = tirage.lance()
+        val protectionCible = cible.calculeDefense()
+        val degatsFinaux = maxOf(degats - protectionCible, 1)
+        cible.pointDeVie -= degatsFinaux
+        println("La cible a pris $degatsFinaux dégâts.")
+    }
+
+}
+
+=== Intermission 2
+
+L'intermission 2 nous demande d'ajouter un attribut armrPrincipale et armure au personnage
+
+=== Mission 3
+
+==== Mission 3.1
+
+Cette mission nous demande de faire un test unitaire pour la méthode calculerDegats()

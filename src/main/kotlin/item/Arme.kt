@@ -19,6 +19,8 @@ class Arme ( nom: String, description: String,val qualite: Qualite,val typeArme:
 
             var degatsTotal = critique + this.qualite.bonusRarete
 
+            println("Critique")
+
             return degatsTotal
 
         } else{

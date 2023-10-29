@@ -288,11 +288,21 @@ fun main(args: Array<String>) {
         armurePrincipale = null,
         vitesse = 11)
 
+    val gnoll = Personnage(
+            "gnoll",
+            pointDeVie = 25,
+            pointDeVieMax = 25,
+            attaque = 11,
+            defense = 8,
+            endurance = 11,
+            armePrincipale = lanceDuKobold,
+            armurePrincipale = null,
+            vitesse = 14)
 
 
     // TODO Intermission 1 Ajouter d'autres monstres
     //On ajoute les monstres a la liste de monstres du jeu
-    val jeu = Jeu(listOf(gobelin))
+    val jeu = Jeu(listOf(gobelin,gnoll))
     //Lancement du jeu
     jeu.lancerCombat()
 }
